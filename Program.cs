@@ -43,47 +43,48 @@
 
         private static void VerifierReponse()
         {
-            throw new NotImplementedException();
+
+            var reponseJoueur = Console.ReadLine();
+
+
+            if (reponseJoueur == "2")
+            {
+                Console.WriteLine("Mauvaise reponse");
+            }
+            else if (reponseJoueur == "22")
+            {
+                Console.WriteLine("Mauvaise reponse");
+            }
+
+            else if (reponseJoueur == "4")
+            {
+                Console.WriteLine("Bonne reponse");
+            }
+            else if (reponseJoueur == "6")
+            {
+                Console.WriteLine("Mauvaise reponse");
+            }
+
+
+
         }
 
         private static void PoserQuestion()
         {
-            var question1 = "What is your favorite color?";
+            var question1 = "Combien font 2+2?";
             Console.WriteLine(question1);
-            var reponse1 = "Blue";
-            var reponse2 = "Red";
-            var reponse3 = "Green";
-            var reponse4 = "Yellow";
-            Console.WriteLine(reponse1);
-            Console.WriteLine(reponse2);
-            Console.WriteLine(reponse3);
-            Console.WriteLine(reponse4);
-
         }
 
         private static void DonnerReponse()
         {
-
-
-            var reponseJoueur = Console.ReadLine();
-
-            if (reponseJoueur == "Blue")
-            {
-
-            }
-            else if (reponseJoueur == "Red")
-            {
-
-            }
-
-            else if (reponseJoueur == "Green")
-            {
-            }
-            else if (reponseJoueur == "Yellow")
-            {
-            }
-
-
+            var reponse1 = "2";
+            var reponse2 = "22";
+            var reponse3 = "4";
+            var reponse4 = "6";
+            Console.WriteLine(reponse1);
+            Console.WriteLine(reponse2);
+            Console.WriteLine(reponse3);
+            Console.WriteLine(reponse4);
 
         }
     }
