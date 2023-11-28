@@ -1,22 +1,23 @@
-﻿namespace Quizz
+﻿using System;
+
+namespace Quizz
 {
     class Program
     {
         static void Main()
         {
-
             AccueilJoueur();
 
-            ParcourirQuestions();
+            int score = ParcourirQuestions();
+
+            AfficherScore(score);
 
             MessageBye();
-
-
         }
 
         private static void MessageBye()
         {
-            Console.WriteLine("Merci de votre participation!");
+            Console.WriteLine("Thank you for playing the quiz. Goodbye!");
         }
 
         static void AccueilJoueur()
@@ -26,66 +27,56 @@
             Console.WriteLine($"{Environment.NewLine}Welcome, {name}!");
         }
 
-        private static void ParcourirQuestions()
+        private static int ParcourirQuestions()
         {
+            int score = 0;
 
-            PoserQuestion();
+            // Question 1
+            if (PoserQuestion("Combien font 2+2?", "4"))
+            {
+                score++;
+            }
+
+            // Ajoutez d'autres questions ici selon le même modèle
+
+            return score;
+        }
+
+        private static void AfficherScore(int score)
+        {
+            Console.WriteLine($"{Environment.NewLine}Your score: {score}");
+        }
+
+        private static bool PoserQuestion(string question, string reponseCorrecte)
+        {
+            Console.WriteLine(question);
             DonnerReponse();
-            VerifierReponse();
-            AfficherScore();
-
-        }
-
-        private static void AfficherScore()
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void VerifierReponse()
-        {
 
             var reponseJoueur = Console.ReadLine();
 
-
-            if (reponseJoueur == "2")
-            {
-                Console.WriteLine("Mauvaise reponse");
-            }
-            else if (reponseJoueur == "22")
-            {
-                Console.WriteLine("Mauvaise reponse");
-            }
-
-            else if (reponseJoueur == "4")
-            {
-                Console.WriteLine("Bonne reponse");
-            }
-            else if (reponseJoueur == "6")
-            {
-                Console.WriteLine("Mauvaise reponse");
-            }
-
-
-
+            return VerifierReponse(reponseJoueur, reponseCorrecte);
         }
 
-        private static void PoserQuestion()
+        private static bool VerifierReponse(string reponseJoueur, string reponseCorrecte)
         {
-            var question1 = "Combien font 2+2?";
-            Console.WriteLine(question1);
+            if (reponseJoueur == reponseCorrecte)
+            {
+                Console.WriteLine("Correct answer!");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Wrong answer!");
+                return false;
+            }
         }
 
         private static void DonnerReponse()
         {
-            var reponse1 = "2";
-            var reponse2 = "22";
-            var reponse3 = "4";
-            var reponse4 = "6";
-            Console.WriteLine(reponse1);
-            Console.WriteLine(reponse2);
-            Console.WriteLine(reponse3);
-            Console.WriteLine(reponse4);
-
+            Console.WriteLine("1) 2");
+            Console.WriteLine("2) 22");
+            Console.WriteLine("3) 4");
+            Console.WriteLine("4) 6");
         }
     }
 }
