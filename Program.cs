@@ -36,6 +36,15 @@
 
         }
 
+        private static void AfficherScore()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void VerifierReponse()
+        {
+            throw new NotImplementedException();
+        }
 
         private static void PoserQuestion()
         {
@@ -58,20 +67,24 @@
 
             var reponseJoueur = Console.ReadLine();
 
+            if (reponseJoueur == "Blue")
+            {
+
+            }
+            else if (reponseJoueur == "Red")
+            {
+
+            }
+
+            else if (reponseJoueur == "Green")
+            {
+            }
+            else if (reponseJoueur == "Yellow")
+            {
+            }
+
 
 
         }
-
-        private static void VerifierReponse()
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void AfficherScore()
-        {
-            throw new NotImplementedException();
-        }
-
-
     }
 }
