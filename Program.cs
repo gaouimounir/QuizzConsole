@@ -16,7 +16,7 @@
 
         private static void MessageBye()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Merci de votre participation!");
         }
 
         static void AccueilJoueur()

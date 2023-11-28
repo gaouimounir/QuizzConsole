@@ -12,3 +12,4 @@ C:\Users\JM\Desktop\Simplon\Formation 3 .NET\QuizzConsole\obj\Debug\net8.0\refin
 C:\Users\JM\Desktop\Simplon\Formation 3 .NET\QuizzConsole\obj\Debug\net8.0\QuizzConsole.pdb
 C:\Users\JM\Desktop\Simplon\Formation 3 .NET\QuizzConsole\obj\Debug\net8.0\QuizzConsole.genruntimeconfig.cache
 C:\Users\JM\Desktop\Simplon\Formation 3 .NET\QuizzConsole\obj\Debug\net8.0\ref\QuizzConsole.dll
+C:\Users\JM\Desktop\Simplon\Formation 3 .NET\QuizzConsole\obj\Debug\net8.0\QuizzConsole.sourcelink.json
