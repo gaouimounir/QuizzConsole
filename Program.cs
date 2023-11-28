@@ -24,7 +24,10 @@ namespace Quizz
         {
             Console.WriteLine("What is your name?");
             var name = Console.ReadLine();
-            Console.WriteLine($"{Environment.NewLine}Welcome, {name}!");
+            Console.WriteLine($"{Environment.NewLine}Hello, {name}!");
+            Console.WriteLine("Welcome to the quiz. Good luck!");
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
         }
 
         private static int ParcourirQuestions()
