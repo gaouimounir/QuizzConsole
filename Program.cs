@@ -24,6 +24,7 @@ namespace Quizz
         {
             Console.WriteLine("What is your name?");
             var name = Console.ReadLine();
+
             Console.WriteLine($"{Environment.NewLine}Hello, {name}!");
             Console.WriteLine("Welcome to the quiz. Good luck!");
             Console.WriteLine("Press any key to continue.");
@@ -40,7 +41,29 @@ namespace Quizz
                 score++;
             }
 
-            // Ajoutez d'autres questions ici selon le même modèle
+            // Question 2
+            if (PoserQuestion("Combien font 22+2?", "24"))
+            {
+                score++;
+            }
+
+            // Question 3
+            if (PoserQuestion("Combien font 4+2?", "6"))
+            {
+                score++;
+            }
+
+            // Question 4
+            if (PoserQuestion("Combien font 6+2?", "8"))
+            {
+                score++;
+            }
+
+            // Question 5
+            if (PoserQuestion("Combien font 8+2?", "10"))
+            {
+                score++;
+            }
 
             return score;
         }
@@ -65,13 +88,19 @@ namespace Quizz
             if (reponseJoueur == reponseCorrecte)
             {
                 Console.WriteLine("Correct answer!");
+                Console.WriteLine("Press any key for the next question.");
+                Console.ReadKey();
                 return true;
             }
             else
             {
                 Console.WriteLine("Wrong answer!");
+                Console.WriteLine("Press any key for the next question.");
+                Console.ReadKey();
                 return false;
+
             }
+
         }
 
         private static void DonnerReponse()
