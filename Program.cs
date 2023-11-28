@@ -2,14 +2,21 @@
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
 
             AccueilJoueur();
 
             ParcourirQuestions();
 
+            MessageBye();
 
+
+        }
+
+        private static void MessageBye()
+        {
+            throw new NotImplementedException();
         }
 
         static void AccueilJoueur()
@@ -32,12 +39,27 @@
 
         private static void PoserQuestion()
         {
+            var question1 = "What is your favorite color?";
+            Console.WriteLine(question1);
+            var reponse1 = "Blue";
+            var reponse2 = "Red";
+            var reponse3 = "Green";
+            var reponse4 = "Yellow";
+            Console.WriteLine(reponse1);
+            Console.WriteLine(reponse2);
+            Console.WriteLine(reponse3);
+            Console.WriteLine(reponse4);
 
         }
 
         private static void DonnerReponse()
         {
-            throw new NotImplementedException();
+
+
+            var reponseJoueur = Console.ReadLine();
+
+
+
         }
 
         private static void VerifierReponse()
