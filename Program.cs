@@ -1,23 +1,95 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Quizz
 {
+    public class Question
+    {
+        // Le texte de la question
+        public string Text { get; set; }
+
+        // Les options de réponse
+        public List<string> Options { get; set; }
+
+        // L'index de l'option correcte dans la liste des options
+        public int CorrectOptionIndex { get; set; }
+    }
+
     class Program
     {
         static void Main()
         {
             AccueilJoueur();
 
-            int score = ParcourirQuestions();
+            // Charger les questions à partir d'un fichier CSV
+            List<Question> questions = ChargerQuestionsDepuisCSV("questions.csv");
 
+            // Vérifier si des questions ont été chargées
+            if (questions.Count == 0)
+            {
+                Console.WriteLine("Aucune question n'a été chargée. Veuillez vérifier le fichier CSV.");
+                return;
+            }
+
+            // Parcourir les questions
+            int score = ParcourirQuestions(questions);
+
+            // Afficher le score final
             AfficherScore(score);
 
+            // Afficher un message de fin
             MessageBye();
         }
 
-        private static void MessageBye()
+        private static List<Question> ChargerQuestionsDepuisCSV(string cheminFichier)
         {
-            Console.WriteLine("Thank you for playing the quiz. Goodbye!");
+            List<Question> questions = new List<Question>();
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(cheminFichier))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        var ligne = sr.ReadLine();
+                        var valeurs = ligne.Split(';');
+
+
+                        if (valeurs.Length >= 3)
+                        {
+                            string question = valeurs[0];
+                            string reponseCorrecte = valeurs[1];
+                            string choix = valeurs[2];
+
+                            List<string> options = new List<string>();
+                            for (int i = 2; i < valeurs.Length; i++)
+                            {
+                                options.Add(valeurs[i]);
+                            }
+
+                            Question nouvelleQuestion = new Question
+                            {
+                                Text = question,
+                                Options = options,
+                                CorrectOptionIndex = int.Parse(reponseCorrecte) - 1
+                            };
+
+                            questions.Add(nouvelleQuestion);
+                        }
+                    }
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Le fichier de questions n'a pas été trouvé.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Une erreur s'est produite lors du chargement des questions : {ex.Message}");
+            }
+
+            return questions;
         }
 
         static void AccueilJoueur()
@@ -31,38 +103,16 @@ namespace Quizz
             Console.ReadKey();
         }
 
-        private static int ParcourirQuestions()
+        private static int ParcourirQuestions(List<Question> questions)
         {
             int score = 0;
 
-            // Question 1
-            if (PoserQuestion("Combien font 2+2?", "4"))
+            foreach (var question in questions)
             {
-                score++;
-            }
-
-            // Question 2
-            if (PoserQuestion("Combien font 22+2?", "24"))
-            {
-                score++;
-            }
-
-            // Question 3
-            if (PoserQuestion("Combien font 4+2?", "6"))
-            {
-                score++;
-            }
-
-            // Question 4
-            if (PoserQuestion("Combien font 6+2?", "8"))
-            {
-                score++;
-            }
-
-            // Question 5
-            if (PoserQuestion("Combien font 8+2?", "10"))
-            {
-                score++;
+                if (PoserQuestion(question.Text, question.Options, question.CorrectOptionIndex))
+                {
+                    score++;
+                }
             }
 
             return score;
@@ -73,19 +123,19 @@ namespace Quizz
             Console.WriteLine($"{Environment.NewLine}Your score: {score}");
         }
 
-        private static bool PoserQuestion(string question, string reponseCorrecte)
+        private static bool PoserQuestion(string question, List<string> options, int correctOptionIndex)
         {
             Console.WriteLine(question);
-            DonnerReponse();
+            DonnerReponse(options);
 
             var reponseJoueur = Console.ReadLine();
 
-            return VerifierReponse(reponseJoueur, reponseCorrecte);
+            return VerifierReponse(reponseJoueur, correctOptionIndex);
         }
 
-        private static bool VerifierReponse(string reponseJoueur, string reponseCorrecte)
+        private static bool VerifierReponse(string reponseJoueur, int correctOptionIndex)
         {
-            if (reponseJoueur == reponseCorrecte)
+            if (int.TryParse(reponseJoueur, out int choixUtilisateur) && choixUtilisateur - 1 == correctOptionIndex)
             {
                 Console.WriteLine("Correct answer!");
                 Console.WriteLine("Press any key for the next question.");
@@ -98,17 +148,20 @@ namespace Quizz
                 Console.WriteLine("Press any key for the next question.");
                 Console.ReadKey();
                 return false;
-
             }
-
         }
 
-        private static void DonnerReponse()
+        private static void DonnerReponse(List<string> options)
         {
-            Console.WriteLine("1) 2");
-            Console.WriteLine("2) 22");
-            Console.WriteLine("3) 4");
-            Console.WriteLine("4) 6");
+            for (int i = 0; i < options.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}) {options[i]}");
+            }
+        }
+
+        private static void MessageBye()
+        {
+            Console.WriteLine("Thank you for playing the quiz. Goodbye!");
         }
     }
 }
