@@ -6,13 +6,8 @@ namespace Quizz
 {
     public class Question
     {
-        // Le texte de la question
-        public string Text { get; set; }
-
-        // Les options de réponse
-        public List<string> Options { get; set; }
-
-        // L'index de l'option correcte dans la liste des options
+        public string Text { get; set; } = "";
+        public List<string> Options { get; set; } = new List<string>();
         public int CorrectOptionIndex { get; set; }
     }
 
@@ -22,23 +17,18 @@ namespace Quizz
         {
             AccueilJoueur();
 
-            // Charger les questions à partir d'un fichier CSV
             List<Question> questions = ChargerQuestionsDepuisCSV("questions.csv");
 
-            // Vérifier si des questions ont été chargées
             if (questions.Count == 0)
             {
                 Console.WriteLine("Aucune question n'a été chargée. Veuillez vérifier le fichier CSV.");
                 return;
             }
 
-            // Parcourir les questions
             int score = ParcourirQuestions(questions);
 
-            // Afficher le score final
             AfficherScore(score);
 
-            // Afficher un message de fin
             MessageBye();
         }
 
@@ -52,21 +42,14 @@ namespace Quizz
                 {
                     while (!sr.EndOfStream)
                     {
-                        var ligne = sr.ReadLine();
-                        var valeurs = ligne.Split(';');
+                        var valeurs = sr.ReadLine()?.Split(';');
 
-
-                        if (valeurs.Length >= 3)
+                        if (valeurs != null && valeurs.Length >= 3)
                         {
                             string question = valeurs[0];
                             string reponseCorrecte = valeurs[1];
-                            string choix = valeurs[2];
 
-                            List<string> options = new List<string>();
-                            for (int i = 2; i < valeurs.Length; i++)
-                            {
-                                options.Add(valeurs[i]);
-                            }
+                            List<string> options = new List<string>(valeurs[2..]);
 
                             Question nouvelleQuestion = new Question
                             {
@@ -109,7 +92,7 @@ namespace Quizz
 
             foreach (var question in questions)
             {
-                if (PoserQuestion(question.Text, question.Options, question.CorrectOptionIndex))
+                if (PoserQuestion(question))
                 {
                     score++;
                 }
@@ -123,10 +106,10 @@ namespace Quizz
             Console.WriteLine($"{Environment.NewLine}Your score: {score}");
         }
 
-        private static bool PoserQuestion(string question, List<string> options, int correctOptionIndex)
+        private static bool PoserQuestion(Question question)
         {
-            Console.WriteLine(question);
-            DonnerReponse(options);
+            Console.WriteLine(question.Text);
+            DonnerReponse(question.Options);
 
             var reponseJoueur = Console.ReadLine();
 
@@ -135,7 +118,7 @@ namespace Quizz
                 return false;
             }
 
-            return VerifierReponse(reponseJoueur, correctOptionIndex);
+            return VerifierReponse(reponseJoueur, question.CorrectOptionIndex);
         }
 
         private static bool VerifierReponse(string reponseJoueur, int correctOptionIndex)
@@ -151,19 +134,17 @@ namespace Quizz
 
             Console.WriteLine("Press Enter for the next question.");
 
-            // Vérifier si la console d'entrée est redirigée
             if (Console.IsInputRedirected)
             {
-                Console.ReadLine(); // Utiliser ReadLine au lieu de ReadKey
+                Console.ReadLine();
             }
             else
             {
-                Console.ReadKey(); // Utiliser ReadKey seulement si la console n'est pas redirigée
+                Console.ReadKey();
             }
 
             return choixUtilisateur - 1 == correctOptionIndex;
         }
-
 
         private static void DonnerReponse(List<string> options)
         {
