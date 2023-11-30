@@ -47,12 +47,12 @@ namespace Quizz
 
         private static void AccueilJoueur()
         {
-            Console.WriteLine("What is your name?");
+            Console.WriteLine("Bienvenue au Quiz interactif!");
+            Console.WriteLine("Comment vous appelez-vous?");
             var name = Console.ReadLine();
 
-            Console.WriteLine($"{Environment.NewLine}Hello, {name}!");
-            Console.WriteLine("Welcome to the quiz. Good luck!");
-            Console.WriteLine("Press any key to continue.");
+            Console.WriteLine($"{Environment.NewLine}Bonjour, {name}!");
+            Console.WriteLine("Prêt à tester vos connaissances? Appuyez sur n'importe quelle touche pour commencer.");
             Console.ReadLine();
         }
 
@@ -90,7 +90,7 @@ namespace Quizz
 
         private static string ChoisirCategorie(HashSet<string> categories)
         {
-            Console.WriteLine("Choose a category:");
+            Console.WriteLine("Choisissez une catégorie:");
             int index = 1;
 
             foreach (var category in categories)
@@ -107,7 +107,7 @@ namespace Quizz
                 }
                 else
                 {
-                    Console.WriteLine("Invalid choice. Please enter a valid category number.");
+                    Console.WriteLine("Choix non valide. Veuillez entrer un numéro de catégorie valide.");
                 }
             }
         }
@@ -170,15 +170,20 @@ namespace Quizz
                 tempsDebutQuestion = DateTime.Now; // Enregistrez le temps de début
                 if (PoserQuestion(question))
                 {
-                    // Si la réponse est correcte, ajoutez le bonus et le score de base
-                    score += CalculerBonusScore(DateTime.Now - tempsDebutQuestion);
+                    // Si la réponse est correcte, ajoutez le score de base et le bonus
+                    int bonusScore = CalculerBonusScore(DateTime.Now - tempsDebutQuestion);
+                    score += 1 + bonusScore;
+                    if (bonusScore > 0)
+                    {
+                        Console.WriteLine($"Bonus Score: +{bonusScore}");
+                    }
                 }
             }
         }
 
         private static void AfficherScore()
         {
-            Console.WriteLine($"{Environment.NewLine}Your final score: {score}");
+            Console.WriteLine($"{Environment.NewLine}Votre score final : {score}");
         }
 
         private static bool PoserQuestion(Question question)
@@ -199,29 +204,23 @@ namespace Quizz
         private static bool VerifierReponse(string reponseJoueur, int correctOptionIndex)
         {
             TimeSpan tempsReponse = DateTime.Now - tempsDebutQuestion;
-            int bonusScore = CalculerBonusScore(tempsReponse);
 
             if (int.TryParse(reponseJoueur, out int choixUtilisateur) && choixUtilisateur - 1 == correctOptionIndex)
             {
-                Console.WriteLine($"Correct answer! Bonus Score: +{bonusScore}");
-                // Ajouter le bonus et le score de base
-                score += bonusScore + 1;
+                Console.WriteLine("Bonne réponse!");
+                // Ajouter le bonus
+                int bonusScore = CalculerBonusScore(tempsReponse);
+                if (bonusScore > 0)
+                {
+                    Console.WriteLine($"Bonus Score: +{bonusScore}");
+                }
+                return true;
             }
             else
             {
-                Console.WriteLine("Wrong answer!");
+                Console.WriteLine("Mauvaise réponse! Pas de Bonus Score.");
+                return false;
             }
-
-            if (Console.IsInputRedirected)
-            {
-                Console.ReadLine();
-            }
-            else
-            {
-                Console.ReadKey();
-            }
-
-            return choixUtilisateur - 1 == correctOptionIndex;
         }
 
         private static void DonnerReponse(List<string> options)
@@ -234,7 +233,7 @@ namespace Quizz
 
         private static void MessageBye()
         {
-            Console.WriteLine("Thank you for playing the quiz. Goodbye!");
+            Console.WriteLine("Merci d'avoir joué au quiz interactif. Au revoir!");
         }
 
         private static int CalculerBonusScore(TimeSpan tempsReponse)
@@ -243,10 +242,14 @@ namespace Quizz
             const double seuilRapide = 5.0; // en secondes
             const int bonusRapide = 3;
 
-            Console.WriteLine($"Response Time: {tempsReponse.TotalSeconds} seconds");
-            Console.WriteLine($"Bonus Score: {(tempsReponse.TotalSeconds < seuilRapide ? bonusRapide : 0)}");
-
-            return tempsReponse.TotalSeconds < seuilRapide ? bonusRapide : 0;
+            if (tempsReponse.TotalSeconds < seuilRapide)
+            {
+                return bonusRapide;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }
