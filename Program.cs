@@ -179,14 +179,15 @@ namespace Quizz
                 tempsDebutQuestion = DateTime.Now; // Enregistrez le temps de début
                 if (PoserQuestion(question))
                 {
-                    // Le score est maintenant mis à jour dans la méthode VerifierReponse
+                    // Si la réponse est correcte, ajoutez le bonus et le score de base
+                    score += CalculerBonusScore(DateTime.Now - tempsDebutQuestion) + 1;
                 }
             }
         }
 
         private static void AfficherScore()
         {
-            Console.WriteLine($"{Environment.NewLine}Your score: {score}");
+            Console.WriteLine($"{Environment.NewLine}Your final score: {score}");
         }
 
         private static bool PoserQuestion(Question question)
@@ -212,7 +213,8 @@ namespace Quizz
             if (int.TryParse(reponseJoueur, out int choixUtilisateur) && choixUtilisateur - 1 == correctOptionIndex)
             {
                 Console.WriteLine($"Correct answer! Bonus Score: +{bonusScore}");
-                score += bonusScore + 1; // Ajouter le bonus et le score de base
+                // Ajouter le bonus et le score de base
+                score += bonusScore + 1;
             }
             else
             {
