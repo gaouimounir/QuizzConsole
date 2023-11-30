@@ -100,7 +100,7 @@ namespace Quizz
             Console.WriteLine($"{Environment.NewLine}Hello, {name}!");
             Console.WriteLine("Welcome to the quiz. Good luck!");
             Console.WriteLine("Press any key to continue.");
-            Console.ReadKey();
+            Console.ReadLine();
         }
 
         private static int ParcourirQuestions(List<Question> questions)
@@ -139,14 +139,14 @@ namespace Quizz
             {
                 Console.WriteLine("Correct answer!");
                 Console.WriteLine("Press any key for the next question.");
-                Console.ReadKey();
+                Console.ReadLine();
                 return true;
             }
             else
             {
                 Console.WriteLine("Wrong answer!");
                 Console.WriteLine("Press any key for the next question.");
-                Console.ReadKey();
+                Console.ReadLine();
                 return false;
             }
         }
