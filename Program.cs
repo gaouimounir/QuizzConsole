@@ -15,6 +15,9 @@ namespace Quizz
 
     class Program
     {
+        private static DateTime tempsDebutQuestion;
+        private static int score = 0;
+
         static void Main()
         {
             AccueilJoueur();
@@ -37,9 +40,10 @@ namespace Quizz
                 return;
             }
 
-            int score = ParcourirQuestions(questions);
+            score = 0; // Réinitialiser le score pour chaque nouvelle partie
+            ParcourirQuestions(questions);
 
-            AfficherScore(score);
+            AfficherScore();
 
             MessageBye();
         }
@@ -157,7 +161,6 @@ namespace Quizz
             return questions;
         }
 
-
         private static void AccueilJoueur()
         {
             Console.WriteLine("What is your name?");
@@ -169,22 +172,19 @@ namespace Quizz
             Console.ReadLine();
         }
 
-        private static int ParcourirQuestions(List<Question> questions)
+        private static void ParcourirQuestions(List<Question> questions)
         {
-            int score = 0;
-
             foreach (var question in questions)
             {
+                tempsDebutQuestion = DateTime.Now; // Enregistrez le temps de début
                 if (PoserQuestion(question))
                 {
-                    score++;
+                    // Le score est maintenant mis à jour dans la méthode VerifierReponse
                 }
             }
-
-            return score;
         }
 
-        private static void AfficherScore(int score)
+        private static void AfficherScore()
         {
             Console.WriteLine($"{Environment.NewLine}Your score: {score}");
         }
@@ -206,16 +206,18 @@ namespace Quizz
 
         private static bool VerifierReponse(string reponseJoueur, int correctOptionIndex)
         {
+            TimeSpan tempsReponse = DateTime.Now - tempsDebutQuestion;
+            int bonusScore = CalculerBonusScore(tempsReponse);
+
             if (int.TryParse(reponseJoueur, out int choixUtilisateur) && choixUtilisateur - 1 == correctOptionIndex)
             {
-                Console.WriteLine("Correct answer!");
+                Console.WriteLine($"Correct answer! Bonus Score: +{bonusScore}");
+                score += bonusScore + 1; // Ajouter le bonus et le score de base
             }
             else
             {
                 Console.WriteLine("Wrong answer!");
             }
-
-            Console.WriteLine("Press Enter for the next question.");
 
             if (Console.IsInputRedirected)
             {
@@ -240,6 +242,20 @@ namespace Quizz
         private static void MessageBye()
         {
             Console.WriteLine("Thank you for playing the quiz. Goodbye!");
+        }
+
+        private static int CalculerBonusScore(TimeSpan tempsReponse)
+        {
+            // Ajustez ces valeurs selon votre préférence
+            const double seuilRapide = 5.0; // en secondes
+            const int bonusScoreRapide = 2;
+
+            if (tempsReponse.TotalSeconds < seuilRapide)
+            {
+                return bonusScoreRapide;
+            }
+
+            return 0; // Aucun bonus si la réponse n'est pas assez rapide
         }
     }
 }
