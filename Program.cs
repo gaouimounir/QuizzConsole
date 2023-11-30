@@ -15,8 +15,8 @@ namespace Quizz
 
     class Program
     {
+        private static int score;
         private static DateTime tempsDebutQuestion;
-        private static int score = 0;
 
         static void Main()
         {
@@ -24,9 +24,6 @@ namespace Quizz
 
             // Charger les catégories uniques à partir d'un fichier CSV
             HashSet<string> categories = ChargerCategoriesDepuisCSV("questions.csv");
-
-            // Afficher les catégories disponibles
-            AfficherCategories(categories);
 
             // Choix de la catégorie
             string selectedCategory = ChoisirCategorie(categories);
@@ -46,6 +43,17 @@ namespace Quizz
             AfficherScore();
 
             MessageBye();
+        }
+
+        private static void AccueilJoueur()
+        {
+            Console.WriteLine("What is your name?");
+            var name = Console.ReadLine();
+
+            Console.WriteLine($"{Environment.NewLine}Hello, {name}!");
+            Console.WriteLine("Welcome to the quiz. Good luck!");
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadLine();
         }
 
         private static HashSet<string> ChargerCategoriesDepuisCSV(string cheminFichier)
@@ -78,15 +86,6 @@ namespace Quizz
             }
 
             return categories;
-        }
-
-        private static void AfficherCategories(HashSet<string> categories)
-        {
-            Console.WriteLine("Available Categories:");
-            foreach (var category in categories)
-            {
-                Console.WriteLine(category);
-            }
         }
 
         private static string ChoisirCategorie(HashSet<string> categories)
@@ -161,26 +160,18 @@ namespace Quizz
             return questions;
         }
 
-        private static void AccueilJoueur()
-        {
-            Console.WriteLine("What is your name?");
-            var name = Console.ReadLine();
-
-            Console.WriteLine($"{Environment.NewLine}Hello, {name}!");
-            Console.WriteLine("Welcome to the quiz. Good luck!");
-            Console.WriteLine("Press any key to continue.");
-            Console.ReadLine();
-        }
-
         private static void ParcourirQuestions(List<Question> questions)
         {
-            foreach (var question in questions)
+            // Mélanger les questions
+            List<Question> questionsMelangees = questions.OrderBy(q => Guid.NewGuid()).ToList();
+
+            foreach (var question in questionsMelangees)
             {
                 tempsDebutQuestion = DateTime.Now; // Enregistrez le temps de début
                 if (PoserQuestion(question))
                 {
                     // Si la réponse est correcte, ajoutez le bonus et le score de base
-                    score += CalculerBonusScore(DateTime.Now - tempsDebutQuestion) + 1;
+                    score += CalculerBonusScore(DateTime.Now - tempsDebutQuestion);
                 }
             }
         }
@@ -250,14 +241,12 @@ namespace Quizz
         {
             // Ajustez ces valeurs selon votre préférence
             const double seuilRapide = 5.0; // en secondes
-            const int bonusScoreRapide = 2;
+            const int bonusRapide = 3;
 
-            if (tempsReponse.TotalSeconds < seuilRapide)
-            {
-                return bonusScoreRapide;
-            }
+            Console.WriteLine($"Response Time: {tempsReponse.TotalSeconds} seconds");
+            Console.WriteLine($"Bonus Score: {(tempsReponse.TotalSeconds < seuilRapide ? bonusRapide : 0)}");
 
-            return 0; // Aucun bonus si la réponse n'est pas assez rapide
+            return tempsReponse.TotalSeconds < seuilRapide ? bonusRapide : 0;
         }
     }
 }
