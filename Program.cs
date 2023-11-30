@@ -128,7 +128,7 @@ namespace Quizz
             Console.WriteLine(question);
             DonnerReponse(options);
 
-            var reponseJoueur = Console.ReadLine();
+            string reponseJoueur = Console.ReadLine();
 
             return VerifierReponse(reponseJoueur, correctOptionIndex);
         }
@@ -138,18 +138,27 @@ namespace Quizz
             if (int.TryParse(reponseJoueur, out int choixUtilisateur) && choixUtilisateur - 1 == correctOptionIndex)
             {
                 Console.WriteLine("Correct answer!");
-                Console.WriteLine("Press any key for the next question.");
-                Console.ReadLine();
-                return true;
             }
             else
             {
                 Console.WriteLine("Wrong answer!");
-                Console.WriteLine("Press any key for the next question.");
-                Console.ReadLine();
-                return false;
             }
+
+            Console.WriteLine("Press Enter for the next question.");
+
+            // Vérifier si la console d'entrée est redirigée
+            if (Console.IsInputRedirected)
+            {
+                Console.ReadLine(); // Utiliser ReadLine au lieu de ReadKey
+            }
+            else
+            {
+                Console.ReadKey(); // Utiliser ReadKey seulement si la console n'est pas redirigée
+            }
+
+            return choixUtilisateur - 1 == correctOptionIndex;
         }
+
 
         private static void DonnerReponse(List<string> options)
         {
