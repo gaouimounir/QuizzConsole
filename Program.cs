@@ -128,7 +128,12 @@ namespace Quizz
             Console.WriteLine(question);
             DonnerReponse(options);
 
-            string reponseJoueur = Console.ReadLine();
+            var reponseJoueur = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(reponseJoueur))
+            {
+                return false;
+            }
 
             return VerifierReponse(reponseJoueur, correctOptionIndex);
         }
