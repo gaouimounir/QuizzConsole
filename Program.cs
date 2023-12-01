@@ -5,21 +5,23 @@ using System.Linq;
 
 namespace Quizz
 {
+    // Définition d'une classe Question pour représenter une question du quiz
     public class Question
     {
-        public string Category { get; set; } = "";
-        public string Text { get; set; } = "";
-        public List<string> Options { get; set; } = [];
-        public int CorrectOptionIndex { get; set; }
+        public string Category { get; set; } = ""; // Catégorie de la question
+        public string Text { get; set; } = "";     // Texte de la question
+        public List<string> Options { get; set; } = new List<string>(); // Liste des options de réponse
+        public int CorrectOptionIndex { get; set; } // Index de l'option correcte dans la liste des options
     }
 
     class Program
     {
         // Déclaration de variables globales
-        private static int score;
-        private static DateTime tempsDebutQuestion;
-        private static TimeSpan tempsReponseQuestion;
+        private static int score;               // Variable pour stocker le score du joueur
+        private static DateTime tempsDebutQuestion;  // Variable pour enregistrer le moment où la question a été posée
+        private static TimeSpan tempsReponseQuestion; // Variable pour stocker le temps de réponse à une question
 
+        // Méthode principale
         static void Main()
         {
             // Appel de la méthode d'accueil
@@ -34,6 +36,7 @@ namespace Quizz
             // Charger les questions de la catégorie choisie à partir d'un fichier CSV
             List<Question> questions = ChargerQuestionsDepuisCSV("questions.csv", selectedCategory);
 
+            // Vérifier s'il y a des questions dans la catégorie sélectionnée
             if (questions.Count == 0)
             {
                 Console.WriteLine($"Aucune question n'a été trouvée pour la catégorie '{selectedCategory}'. Veuillez vérifier le fichier CSV.");
@@ -68,11 +71,13 @@ namespace Quizz
         // Méthode pour charger les catégories depuis un fichier CSV
         private static HashSet<string> ChargerCategoriesDepuisCSV(string cheminFichier)
         {
-            HashSet<string> categories = [];
+            HashSet<string> categories = new HashSet<string>();
 
             try
             {
-                using StreamReader sr = new(cheminFichier);
+                // Utilisation du bloc using pour garantir la fermeture du StreamReader
+                using StreamReader sr = new StreamReader(cheminFichier);
+
                 // Parcourir le fichier CSV
                 while (!sr.EndOfStream)
                 {
@@ -103,16 +108,19 @@ namespace Quizz
             Console.WriteLine("Choisissez une catégorie :");
             int index = 1;
 
+            // Afficher les catégories disponibles avec des indices
             foreach (var category in categories)
             {
                 Console.WriteLine($"{index}. {category}");
                 index++;
             }
 
+            // Attendre une entrée utilisateur valide
             while (true)
             {
                 if (int.TryParse(Console.ReadLine(), out int choixCategorie) && choixCategorie >= 1 && choixCategorie <= categories.Count)
                 {
+                    // Retourner la catégorie sélectionnée
                     return categories.ElementAt(choixCategorie - 1);
                 }
                 else
@@ -125,11 +133,13 @@ namespace Quizz
         // Méthode pour charger les questions depuis un fichier CSV
         private static List<Question> ChargerQuestionsDepuisCSV(string cheminFichier, string selectedCategory)
         {
-            List<Question> questions = [];
+            List<Question> questions = new List<Question>();
 
             try
             {
-                using StreamReader sr = new(cheminFichier);
+                // Utilisation du bloc using pour garantir la fermeture du StreamReader
+                using StreamReader sr = new StreamReader(cheminFichier);
+
                 // Parcourir le fichier CSV
                 while (!sr.EndOfStream)
                 {
@@ -141,8 +151,10 @@ namespace Quizz
                         string questionText = valeurs[1];
                         string reponseCorrecte = valeurs[2];
 
+                        // Vérifier si la question appartient à la catégorie sélectionnée
                         if (category == selectedCategory)
                         {
+                            // Récupérer les options de réponse à partir des valeurs restantes
                             List<string> options = new List<string>(valeurs[3..]);
 
                             // Créer un objet Question et l'ajouter à la liste
@@ -174,32 +186,31 @@ namespace Quizz
         // Méthode principale pour parcourir les questions et gérer les réponses
         private static void ParcourirQuestions(List<Question> questions)
         {
-            // Mélanger les questions
-            List<Question> questionsMelangees = [.. questions.OrderBy(q => Guid.NewGuid())];
+            // Mélanger les questions pour un ordre aléatoire
+            List<Question> questionsMelangees = questions.OrderBy(q => Guid.NewGuid()).ToList();
 
+            // Pour chaque question, poser la question et vérifier la réponse
             foreach (var question in questionsMelangees)
             {
-                tempsDebutQuestion = DateTime.Now;
+                tempsDebutQuestion = DateTime.Now; // Enregistrement du début du temps de réponse
                 if (PoserQuestion(question))
                 {
                     score += 1; // Ajoute 1 point pour une bonne réponse
                 }
-                AfficherScore();
+                AfficherScore(); // Afficher le score après chaque question
             }
         }
 
         // Méthode pour afficher le score actuel
         private static void AfficherScore()
         {
-            Console.WriteLine($"{Environment.NewLine}Votre score est de : {score} points.");
-            Console.WriteLine($"Temps de réponse : {tempsReponseQuestion.TotalSeconds} secondes");
+            Console.WriteLine($"{Environment.NewLine}Votre score est de : {score} points. Temps de réponse : {tempsReponseQuestion.TotalSeconds} secondes.");
         }
 
         // Méthode pour poser une question
         private static bool PoserQuestion(Question question)
         {
             Console.WriteLine(question.Text);
-            tempsDebutQuestion = DateTime.Now; // Début du temps de réponse
             DonnerReponse(question.Options);
 
             var reponseJoueur = Console.ReadLine();
@@ -209,17 +220,21 @@ namespace Quizz
                 return false;
             }
 
-            tempsReponseQuestion = DateTime.Now - tempsDebutQuestion; // Fin du temps de réponse
             return VerifierReponse(reponseJoueur, question.CorrectOptionIndex);
         }
 
         // Méthode pour vérifier la réponse
         private static bool VerifierReponse(string reponseJoueur, int correctOptionIndex)
         {
+            tempsReponseQuestion = DateTime.Now - tempsDebutQuestion; // Calcul du temps de réponse
+
+            // Vérification de la réponse en comparant l'index de l'option choisie avec l'index de la réponse correcte
             if (int.TryParse(reponseJoueur, out int choixUtilisateur) && choixUtilisateur - 1 == correctOptionIndex)
             {
                 Console.WriteLine("Bonne réponse ! +1");
                 int bonusScore = CalculerBonusScore(tempsReponseQuestion);
+
+                // Si un bonus est obtenu, l'ajouter au score et l'afficher
                 if (bonusScore > 0)
                 {
                     score += bonusScore;
@@ -252,9 +267,10 @@ namespace Quizz
         // Méthode pour calculer le bonus de score en fonction du temps de réponse
         private static int CalculerBonusScore(TimeSpan tempsReponse)
         {
-            const double seuilRapide = 5.0; // en secondes
-            const int bonusRapide = 3;
+            const double seuilRapide = 5.0; // Seuil de temps en secondes pour le bonus
+            const int bonusRapide = 3;      // Montant du bonus pour une réponse rapide
 
+            // Si le temps de réponse est inférieur au seuil, retourner le montant du bonus, sinon retourner 0
             return tempsReponse.TotalSeconds < seuilRapide ? bonusRapide : 0;
         }
     }
