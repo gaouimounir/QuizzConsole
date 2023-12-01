@@ -18,6 +18,7 @@ namespace Quizz
         // Déclaration de variables globales
         private static int score;
         private static DateTime tempsDebutQuestion;
+        private static TimeSpan tempsReponseQuestion;
 
         static void Main()
         {
@@ -174,7 +175,7 @@ namespace Quizz
         private static void ParcourirQuestions(List<Question> questions)
         {
             // Mélanger les questions
-            List<Question> questionsMelangees = questions.OrderBy(q => Guid.NewGuid()).ToList();
+            List<Question> questionsMelangees = [.. questions.OrderBy(q => Guid.NewGuid())];
 
             foreach (var question in questionsMelangees)
             {
@@ -191,12 +192,14 @@ namespace Quizz
         private static void AfficherScore()
         {
             Console.WriteLine($"{Environment.NewLine}Votre score est de : {score} points.");
+            Console.WriteLine($"Temps de réponse : {tempsReponseQuestion.TotalSeconds} secondes");
         }
 
         // Méthode pour poser une question
         private static bool PoserQuestion(Question question)
         {
             Console.WriteLine(question.Text);
+            tempsDebutQuestion = DateTime.Now; // Début du temps de réponse
             DonnerReponse(question.Options);
 
             var reponseJoueur = Console.ReadLine();
@@ -206,18 +209,17 @@ namespace Quizz
                 return false;
             }
 
+            tempsReponseQuestion = DateTime.Now - tempsDebutQuestion; // Fin du temps de réponse
             return VerifierReponse(reponseJoueur, question.CorrectOptionIndex);
         }
 
         // Méthode pour vérifier la réponse
         private static bool VerifierReponse(string reponseJoueur, int correctOptionIndex)
         {
-            TimeSpan tempsReponse = DateTime.Now - tempsDebutQuestion;
-
             if (int.TryParse(reponseJoueur, out int choixUtilisateur) && choixUtilisateur - 1 == correctOptionIndex)
             {
                 Console.WriteLine("Bonne réponse ! +1");
-                int bonusScore = CalculerBonusScore(tempsReponse);
+                int bonusScore = CalculerBonusScore(tempsReponseQuestion);
                 if (bonusScore > 0)
                 {
                     score += bonusScore;
