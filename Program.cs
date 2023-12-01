@@ -9,7 +9,7 @@ namespace Quizz
     {
         public string Category { get; set; } = "";
         public string Text { get; set; } = "";
-        public List<string> Options { get; set; } = new List<string>();
+        public List<string> Options { get; set; } = [];
         public int CorrectOptionIndex { get; set; }
     }
 
@@ -67,22 +67,20 @@ namespace Quizz
         // Méthode pour charger les catégories depuis un fichier CSV
         private static HashSet<string> ChargerCategoriesDepuisCSV(string cheminFichier)
         {
-            HashSet<string> categories = new HashSet<string>();
+            HashSet<string> categories = [];
 
             try
             {
-                using (StreamReader sr = new StreamReader(cheminFichier))
+                using StreamReader sr = new(cheminFichier);
+                // Parcourir le fichier CSV
+                while (!sr.EndOfStream)
                 {
-                    // Parcourir le fichier CSV
-                    while (!sr.EndOfStream)
-                    {
-                        var valeurs = sr.ReadLine()?.Split(';');
+                    string[]? valeurs = sr.ReadLine()?.Split(';');
 
-                        if (valeurs != null && valeurs.Length >= 1)
-                        {
-                            string category = valeurs[0];
-                            categories.Add(category);
-                        }
+                    if (valeurs != null && valeurs.Length >= 1)
+                    {
+                        string category = valeurs[0];
+                        categories.Add(category);
                     }
                 }
             }
@@ -126,16 +124,16 @@ namespace Quizz
         // Méthode pour charger les questions depuis un fichier CSV
         private static List<Question> ChargerQuestionsDepuisCSV(string cheminFichier, string selectedCategory)
         {
-            List<Question> questions = new List<Question>();
+            List<Question> questions = [];
 
             try
             {
-                using (StreamReader sr = new StreamReader(cheminFichier))
+                using (StreamReader sr = new(cheminFichier))
                 {
                     // Parcourir le fichier CSV
                     while (!sr.EndOfStream)
                     {
-                        var valeurs = sr.ReadLine()?.Split(';');
+                        string[]? valeurs = sr.ReadLine()?.Split(';');
 
                         if (valeurs != null && valeurs.Length >= 5)
                         {
