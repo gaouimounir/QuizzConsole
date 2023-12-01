@@ -15,16 +15,22 @@ namespace Quizz
 
     class Program
     {
+        // Déclaration de variables globales
         private static int score;
         private static DateTime tempsDebutQuestion;
 
         static void Main()
         {
+            // Appel de la méthode d'accueil
             AccueilJoueur();
 
+            // Charger les catégories uniques à partir d'un fichier CSV
             HashSet<string> categories = ChargerCategoriesDepuisCSV("questions.csv");
+
+            // Choix de la catégorie
             string selectedCategory = ChoisirCategorie(categories);
 
+            // Charger les questions de la catégorie choisie à partir d'un fichier CSV
             List<Question> questions = ChargerQuestionsDepuisCSV("questions.csv", selectedCategory);
 
             if (questions.Count == 0)
@@ -33,14 +39,20 @@ namespace Quizz
                 return;
             }
 
+            // Initialisation du score
             score = 0;
+
+            // Parcourir et poser des questions
             ParcourirQuestions(questions);
 
+            // Afficher le score final
             AfficherScore();
 
+            // Message de fin
             MessageBye();
         }
 
+        // Méthode d'accueil du joueur
         private static void AccueilJoueur()
         {
             Console.WriteLine("Bienvenue au Quiz interactif!");
@@ -52,6 +64,7 @@ namespace Quizz
             Console.ReadLine();
         }
 
+        // Méthode pour charger les catégories depuis un fichier CSV
         private static HashSet<string> ChargerCategoriesDepuisCSV(string cheminFichier)
         {
             HashSet<string> categories = new HashSet<string>();
@@ -60,6 +73,7 @@ namespace Quizz
             {
                 using (StreamReader sr = new StreamReader(cheminFichier))
                 {
+                    // Parcourir le fichier CSV
                     while (!sr.EndOfStream)
                     {
                         var valeurs = sr.ReadLine()?.Split(';');
@@ -84,6 +98,7 @@ namespace Quizz
             return categories;
         }
 
+        // Méthode pour choisir une catégorie
         private static string ChoisirCategorie(HashSet<string> categories)
         {
             Console.WriteLine("Choisissez une catégorie :");
@@ -108,6 +123,7 @@ namespace Quizz
             }
         }
 
+        // Méthode pour charger les questions depuis un fichier CSV
         private static List<Question> ChargerQuestionsDepuisCSV(string cheminFichier, string selectedCategory)
         {
             List<Question> questions = new List<Question>();
@@ -116,6 +132,7 @@ namespace Quizz
             {
                 using (StreamReader sr = new StreamReader(cheminFichier))
                 {
+                    // Parcourir le fichier CSV
                     while (!sr.EndOfStream)
                     {
                         var valeurs = sr.ReadLine()?.Split(';');
@@ -130,6 +147,7 @@ namespace Quizz
                             {
                                 List<string> options = new List<string>(valeurs[3..]);
 
+                                // Créer un objet Question et l'ajouter à la liste
                                 Question nouvelleQuestion = new Question
                                 {
                                     Category = category,
@@ -156,8 +174,10 @@ namespace Quizz
             return questions;
         }
 
+        // Méthode principale pour parcourir les questions et gérer les réponses
         private static void ParcourirQuestions(List<Question> questions)
         {
+            // Mélanger les questions
             List<Question> questionsMelangees = questions.OrderBy(q => Guid.NewGuid()).ToList();
 
             foreach (var question in questionsMelangees)
@@ -171,11 +191,13 @@ namespace Quizz
             }
         }
 
+        // Méthode pour afficher le score actuel
         private static void AfficherScore()
         {
             Console.WriteLine($"{Environment.NewLine}Votre score actuel : {score}");
         }
 
+        // Méthode pour poser une question
         private static bool PoserQuestion(Question question)
         {
             Console.WriteLine(question.Text);
@@ -191,6 +213,7 @@ namespace Quizz
             return VerifierReponse(reponseJoueur, question.CorrectOptionIndex);
         }
 
+        // Méthode pour vérifier la réponse
         private static bool VerifierReponse(string reponseJoueur, int correctOptionIndex)
         {
             TimeSpan tempsReponse = DateTime.Now - tempsDebutQuestion;
@@ -213,6 +236,7 @@ namespace Quizz
             }
         }
 
+        // Méthode pour afficher les options de réponse
         private static void DonnerReponse(List<string> options)
         {
             for (int i = 0; i < options.Count; i++)
@@ -221,11 +245,13 @@ namespace Quizz
             }
         }
 
+        // Méthode pour afficher le message de fin
         private static void MessageBye()
         {
             Console.WriteLine("Merci d'avoir joué au quiz. Au revoir !");
         }
 
+        // Méthode pour calculer le bonus de score en fonction du temps de réponse
         private static int CalculerBonusScore(TimeSpan tempsReponse)
         {
             const double seuilRapide = 5.0; // en secondes
