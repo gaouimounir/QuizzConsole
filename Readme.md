@@ -1,55 +1,43 @@
-# Récupérer le projet
 
-Bienvenue, pour récupérer le projet il suffit de ....
+# Quiz interactif en C#
 
-# Lancer le projet 
+Bienvenue dans le Quiz interactif en C#! Ce programme vous permet de tester vos connaissances à travers une série de questions réparties dans différentes catégories. Les questions sont chargées à partir d'un fichier CSV, et vous devrez choisir la catégorie qui vous intéresse avant de répondre aux questions.
 
-Pour lancer le projet ...
 
-# Les étapes de mon jeu de quizz :
+## Comment exécuter le programme
 
-Pour se faciliter la vie, on a au début une seule catégorie. Chaque titre et sous titre de ce readme.md doit être transformé en méthode.
+1) Assurez-vous d'avoir un fichier CSV contenant les questions au format approprié (voir ci-dessous).
 
-## Ecrire les questions en "dur" dans le code
+2) Compilez et exécutez le programme C#.
 
-3 questions récupérées en "dur" dans un premier temps
- - ``` var questionUne = "Et sinon ça va ?"```
- - ``` var reponseUne = "Ouais et toi ?"```
- - ``` var reponseDeux = "Non pas trop frère."```
- - ``` var reponseTrois = "C'est la hess."```
 
-## Depuis un fichier dans un second temps
+## Comment jouer
 
-### Récupérer la premier ligne du fichier CSV
+1) Le programme commence par vous accueillir et vous demande votre nom.
+2) Ensuite, vous pouvez choisir une catégorie parmi celles disponibles.
+3) Le quiz commencera avec des questions aléatoires de la catégorie choisie.
+4) Pour chaque question, lisez attentivement et choisissez la réponse correcte en entrant le numéro correspondant.
+5) Vous recevrez des points pour chaque réponse correcte, avec un bonus de score si vous répondez rapidement.
+6) À la fin du quiz, votre score total sera affiché.
+## Format du fichier CSV
 
-Utilisation de la méthode ... pour récupérer lSéparer les champs ...
+Le fichier CSV doit être structuré comme suit :
 
-### Récupérer la liste des questions
+Catégorie;Question;Numéro de la bonne option;Option 1;Option 2;Option 3;Option 4
 
-Quelle est la structure de ma liste de questions ?
- - **Les différents type de collection**
+- Chaque ligne représente une question avec sa catégorie, le texte de la question, Numéro de la bonne option, et les 4 autres options possibles.
+- La bonne option doit être numérotée de 1 à 4 et correspondre à l'option correcte.
 
-1. List<>
-2. Dictionnary<>
-3. string[]
+Exemple : 
 
-Si on fait un tableau de string pour lister les intitulés, comment lier chaque question à ses réponses ?
-Il est temps de construire des classes : une classe Question qui contient une liste de réponse.
+Maths;Combien font 2+2?;3;2;5;4;22
 
-## Acceuillir le joueur
+Science;Quelle est la plus grande planète du système solaire?;1;Jupiter;Vénus;Mars;Saturne
 
-## Demander la catégorie (dans un second temps) et filtrer la liste des questions
+## Remarques
 
-## Parcourir les questions (boucle)
-Pour chacune d'entre elles
-1. **Poser la question**
+- Si aucune question n'est trouvée pour la catégorie sélectionnée, veuillez vérifier le fichier CSV.
+- Assurez-vous que le fichier CSV est correctement formaté pour éviter des erreurs lors du chargement des questions.
 
-2. **Donner les réponses possibles**
 
-3. **Vérifier si la réponse est bonne/mauvaise/une erreur**
-
-4. **Informer l'utilisateur du résultat et afficher son score**
-
-5. **Boucler**
-
-## Afficher un message d'au revoir avec le score lorsque l'ensemble des questions ont été posées
+Amusez-vous bien en testant vos connaissances avec ce Quiz interactif en C#!
