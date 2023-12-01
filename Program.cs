@@ -22,13 +22,9 @@ namespace Quizz
         {
             AccueilJoueur();
 
-            // Charger les catégories uniques à partir d'un fichier CSV
             HashSet<string> categories = ChargerCategoriesDepuisCSV("questions.csv");
-
-            // Choix de la catégorie
             string selectedCategory = ChoisirCategorie(categories);
 
-            // Charger les questions de la catégorie choisie à partir d'un fichier CSV
             List<Question> questions = ChargerQuestionsDepuisCSV("questions.csv", selectedCategory);
 
             if (questions.Count == 0)
@@ -37,7 +33,7 @@ namespace Quizz
                 return;
             }
 
-            score = 0; // Réinitialiser le score pour chaque nouvelle partie
+            score = 0;
             ParcourirQuestions(questions);
 
             AfficherScore();
@@ -90,7 +86,7 @@ namespace Quizz
 
         private static string ChoisirCategorie(HashSet<string> categories)
         {
-            Console.WriteLine("Choisissez une catégorie:");
+            Console.WriteLine("Choisissez une catégorie :");
             int index = 1;
 
             foreach (var category in categories)
@@ -107,7 +103,7 @@ namespace Quizz
                 }
                 else
                 {
-                    Console.WriteLine("Choix non valide. Veuillez entrer un numéro de catégorie valide.");
+                    Console.WriteLine("Choix invalide. Veuillez entrer un numéro de catégorie valide.");
                 }
             }
         }
@@ -162,28 +158,22 @@ namespace Quizz
 
         private static void ParcourirQuestions(List<Question> questions)
         {
-            // Mélanger les questions
             List<Question> questionsMelangees = questions.OrderBy(q => Guid.NewGuid()).ToList();
 
             foreach (var question in questionsMelangees)
             {
-                tempsDebutQuestion = DateTime.Now; // Enregistrez le temps de début
+                tempsDebutQuestion = DateTime.Now;
                 if (PoserQuestion(question))
                 {
-                    // Si la réponse est correcte, ajoutez le score de base et le bonus
-                    int bonusScore = CalculerBonusScore(DateTime.Now - tempsDebutQuestion);
-                    score += 1 + bonusScore;
-                    if (bonusScore > 0)
-                    {
-                        Console.WriteLine($"Bonus Score: +{bonusScore}");
-                    }
+                    score += 1; // Ajoute 1 point pour une bonne réponse
                 }
+                AfficherScore();
             }
         }
 
         private static void AfficherScore()
         {
-            Console.WriteLine($"{Environment.NewLine}Votre score final : {score}");
+            Console.WriteLine($"{Environment.NewLine}Votre score actuel : {score}");
         }
 
         private static bool PoserQuestion(Question question)
@@ -207,18 +197,18 @@ namespace Quizz
 
             if (int.TryParse(reponseJoueur, out int choixUtilisateur) && choixUtilisateur - 1 == correctOptionIndex)
             {
-                Console.WriteLine("Bonne réponse!");
-                // Ajouter le bonus
+                Console.WriteLine("Bonne réponse ! +1");
                 int bonusScore = CalculerBonusScore(tempsReponse);
                 if (bonusScore > 0)
                 {
-                    Console.WriteLine($"Bonus Score: +{bonusScore}");
+                    score += bonusScore;
+                    Console.WriteLine($"Bonus Score : +{bonusScore}");
                 }
                 return true;
             }
             else
             {
-                Console.WriteLine("Mauvaise réponse! Pas de Bonus Score.");
+                Console.WriteLine("Mauvaise réponse !");
                 return false;
             }
         }
@@ -233,23 +223,15 @@ namespace Quizz
 
         private static void MessageBye()
         {
-            Console.WriteLine("Merci d'avoir joué au quiz interactif. Au revoir!");
+            Console.WriteLine("Merci d'avoir joué au quiz. Au revoir !");
         }
 
         private static int CalculerBonusScore(TimeSpan tempsReponse)
         {
-            // Ajustez ces valeurs selon votre préférence
             const double seuilRapide = 5.0; // en secondes
             const int bonusRapide = 3;
 
-            if (tempsReponse.TotalSeconds < seuilRapide)
-            {
-                return bonusRapide;
-            }
-            else
-            {
-                return 0;
-            }
+            return tempsReponse.TotalSeconds < seuilRapide ? bonusRapide : 0;
         }
     }
 }
