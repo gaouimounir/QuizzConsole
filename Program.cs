@@ -128,34 +128,32 @@ namespace Quizz
 
             try
             {
-                using (StreamReader sr = new(cheminFichier))
+                using StreamReader sr = new(cheminFichier);
+                // Parcourir le fichier CSV
+                while (!sr.EndOfStream)
                 {
-                    // Parcourir le fichier CSV
-                    while (!sr.EndOfStream)
+                    string[]? valeurs = sr.ReadLine()?.Split(';');
+
+                    if (valeurs != null && valeurs.Length >= 5)
                     {
-                        string[]? valeurs = sr.ReadLine()?.Split(';');
+                        string category = valeurs[0];
+                        string questionText = valeurs[1];
+                        string reponseCorrecte = valeurs[2];
 
-                        if (valeurs != null && valeurs.Length >= 5)
+                        if (category == selectedCategory)
                         {
-                            string category = valeurs[0];
-                            string questionText = valeurs[1];
-                            string reponseCorrecte = valeurs[2];
+                            List<string> options = new List<string>(valeurs[3..]);
 
-                            if (category == selectedCategory)
+                            // Créer un objet Question et l'ajouter à la liste
+                            Question nouvelleQuestion = new Question
                             {
-                                List<string> options = new List<string>(valeurs[3..]);
+                                Category = category,
+                                Text = questionText,
+                                Options = options,
+                                CorrectOptionIndex = int.Parse(reponseCorrecte) - 1
+                            };
 
-                                // Créer un objet Question et l'ajouter à la liste
-                                Question nouvelleQuestion = new Question
-                                {
-                                    Category = category,
-                                    Text = questionText,
-                                    Options = options,
-                                    CorrectOptionIndex = int.Parse(reponseCorrecte) - 1
-                                };
-
-                                questions.Add(nouvelleQuestion);
-                            }
+                            questions.Add(nouvelleQuestion);
                         }
                     }
                 }
@@ -192,7 +190,7 @@ namespace Quizz
         // Méthode pour afficher le score actuel
         private static void AfficherScore()
         {
-            Console.WriteLine($"{Environment.NewLine}Votre score actuel : {score}");
+            Console.WriteLine($"{Environment.NewLine}Votre score est de : {score} points.");
         }
 
         // Méthode pour poser une question

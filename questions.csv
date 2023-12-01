@@ -1,30 +1,26 @@
 Math;Combien font 2+2?;3;2;22;4;6
-Math;Quel est le résultat de 5x7?;4;30;35;40;42
+Math;Quel est le résultat de 5x7?;2;30;35;40;42
 Math;Si x = 3, quelle est la valeur de 2x - 1?;2;4;5;6;7
 Math;Quel est le carré de 9?;1;81;64;49;36
-Math;Si a + b = 10 et a - b = 4, quelle est la valeur de a?;3;7;6;5;8
+Math;Si a + b = 10 et a - b = 4, quelle est la valeur de a?;1;7;6;5;8
 Science;Quelle planète est souvent appelée la "planète rouge"?;1;Mars;Vénus;Jupiter;Saturne
-Science;Quel élément chimique a pour symbole "O"?;3;Oxygène;Or;Argent;Azote
-Science;Quel est le processus par lequel les plantes produisent leur propre nourriture?;4;Photosynthèse;Respiration;Digestion;Excrétion
+Science;Quel élément chimique a pour symbole "O"?;1;Oxygène;Or;Argent;Azote
+Science;Quel est le processus par lequel les plantes produisent leur propre nourriture?;1;Photosynthèse;Respiration;Digestion;Excrétion
 Science;Combien de continents y a-t-il sur la Terre?;2;7;5;6;8
-Science;Quelle est la plus grande mer du monde?;1;Mer de Chine méridionale;Mer des Caraïbes;Mer Méditerranée;Mer du Japon
-Geography;Quelle est la plus grande île du monde?;1;Groenland;Australie;Borneo;Sumatra
-Geography;Quelle rivière traverse la ville de Paris?;2;Seine;Thames;Danube;Nile
-Geography;Quelle est la capitale du Canada?;3;Ottawa;Toronto;Vancouver;Montreal
-Geography;Quelle est la plus haute montagne du monde?;4;Everest;K2;Kangchenjunga;Lhotse
+Science;Quelle est le plus grand pays du monde?;3;Canada;Chine;Russie;Japon
+Geography;Quelle est la plus grande île du monde?;2;Ibiza;Australie;Borneo;Sumatra
+Geography;Quelle rivière traverse la ville de Paris?;1;Seine;Thames;Danube;Nile
+Geography;Quelle est la capitale du Canada?;1;Ottawa;Toronto;Vancouver;Montreal
+Geography;Quelle est la plus haute montagne du monde?;1;Everest;K2;Kangchenjunga;Lhotse
 Geography;Quel pays est appelé le "Pays du Soleil Levant"?;1;Japon;Corée du Sud;Chine;Inde
 Movies;Quel film a remporté l'Oscar du meilleur film en 2020?;3;Parasite;1917;Joker;Once Upon a Time in Hollywood
-Movies;Qui a joué le rôle de Neo dans "The Matrix"?;4;Keanu Reeves;Brad Pitt;Tom Cruise;Leonardo DiCaprio
+Movies;Qui a joué le rôle de Neo dans "The Matrix"?;1;Keanu Reeves;Brad Pitt;Tom Cruise;Leonardo DiCaprio
 Movies;Quel réalisateur est derrière le film "Pulp Fiction"?;1;Quentin Tarantino;Christopher Nolan;Martin Scorsese;Steven Spielberg
-Movies;Qui a remporté l'Oscar de la meilleure actrice en 2021?;2;Frances McDormand;Viola Davis;Carey Mulligan;Andra Day
 Movies;Quel film met en scène un requin mécanique géant?;3;Les Dents de la mer;Jurassic Park;Deep Blue Sea;Sharknado
-Music;Quel instrument Wolfgang Amadeus Mozart a-t-il joué?;2;Piano;Violon;Flûte;Trompette
+Music;Quel instrument Wolfgang Amadeus Mozart a-t-il joué?;1;Piano;Violon;Flûte;Trompette
 Music;Qui est souvent appelé le "Roi de la Pop"?;1;Michael Jackson;Elvis Presley;Prince;Madonna
-Music;Quel groupe a sorti l'album "The Dark Side of the Moon"?;3;Pink Floyd;The Beatles;Led Zeppelin;Queen
-Music;Quelle chanteuse est surnommée "Queen of Soul"?;4;Aretha Franklin;Whitney Houston;Beyoncé;Adele
-Music;Quel genre musical est associé à Bob Marley?;1;Reggae;Jazz;Rock;Hip-hop
-History;Quelle guerre a été surnommée "la Grande Guerre"?;4;Première Guerre mondiale;Guerre civile américaine;Seconde Guerre mondiale;Guerre froide
-History;Qui était le premier président des États-Unis?;1;George Washington;Thomas Jefferson;John Adams;Abraham Lincoln
-History;En quelle année le mur de Berlin est-il tombé?;3;1989;1991;1987;1993
-History;Quel empire était dirigé par Napoléon Bonaparte?;2;Empire français;Empire britannique;Empire espagnol;Empire romain
-History;Quelle reine d'Égypte était connue pour sa liaison avec Marc Antoine et Jules César?;4;Cléopâtre;Néfertiti;Hatshepsout;Isis
+Music;Quel genre musical est associé à Bob Marley?;2;Jazz;Reggae;Rock;Hip-hop
+History;Qui était le dernier président des États-Unis?;3;George Washington;Thomas Jefferson;Joe Biden;Abraham Lincoln
+History;En quelle année le mur de Berlin est-il tombé?;1;1989;1991;1987;1993
+History;Quel empire était dirigé par Napoléon Bonaparte?;4;Empire romain;Empire britannique;Empire espagnol;Empire français
+History;Quelle reine d'Égypte était connue pour sa liaison avec Marc Antoine et Jules César?;1;Cléopâtre;Néfertiti;Hatshepsout;Isis
